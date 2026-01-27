@@ -1,0 +1,37 @@
+---
+import type { NavItem } from '../types'
+
+interface Props {
+  siteName: string
+  navItems: NavItem[]
+}
+
+const { siteName, navItems } = Astro.props
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-14">
+      <a href="#" class="font-semibold text-lg text-slate-800">{siteName}</a>
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100/80 rounded-full px-1 py-1">
+        {navItems.map(item => (
+          <a href={item.href} class="px-4 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white rounded-full transition-all">{item.name}</a>
+        ))}
+      </div>
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="sm:hidden p-2 text-slate-600 hover:text-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden sm:hidden bg-white/95 backdrop-blur-md border-t border-slate-100">
+    <div class="px-4 py-3 space-y-2">
+      {navItems.map(item => (
+        <a href={item.href} class="block py-2 text-slate-600 hover:text-primary-600">{item.name}</a>
+      ))}
+    </div>
+  </div>
+</nav>

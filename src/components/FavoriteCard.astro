@@ -1,0 +1,27 @@
+---
+import type { FavoriteItem } from '../types'
+
+interface Props {
+  item: FavoriteItem
+  gradientFrom: string
+  gradientTo: string
+  iconColor: string
+  iconPath: string
+}
+
+const { item, gradientFrom, gradientTo, iconColor, iconPath } = Astro.props
+---
+
+<div class="group favorite-card bg-white/70 backdrop-blur-sm rounded-xl overflow-hidden shadow-md shadow-slate-200/40 card-hover cursor-pointer">
+  <div class={`aspect-video bg-gradient-to-br ${gradientFrom} ${gradientTo} flex items-center justify-center`}>
+    <svg class={`w-12 h-12 ${iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={iconPath} />
+    </svg>
+  </div>
+  <div class="p-4">
+    <h4 class="font-medium text-slate-800 text-sm mb-2 line-clamp-2">{item.name}</h4>
+    <div class="card-comment-wrapper">
+      <p class="card-comment text-xs text-slate-500">{item.comment}</p>
+    </div>
+  </div>
+</div>

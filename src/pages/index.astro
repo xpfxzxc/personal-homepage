@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import HeroSection from '../components/HeroSection.astro'
+import ProjectsSection from '../components/ProjectsSection.astro'
+import FavoritesSection from '../components/FavoritesSection.astro'
+import ToolboxSection from '../components/ToolboxSection.astro'
+
+import { siteData, statusColors } from '../data/site'
+import { projects } from '../data/projects'
+import { favorites } from '../data/favorites'
+import { websites, tools, aiTools } from '../data/toolbox'
+---
+
+<BaseLayout>
+  <HeroSection siteData={siteData} />
+  <ProjectsSection projects={projects} statusColors={statusColors} />
+  <FavoritesSection favorites={favorites} />
+  <ToolboxSection websites={websites} tools={tools} aiTools={aiTools} />
+</BaseLayout>

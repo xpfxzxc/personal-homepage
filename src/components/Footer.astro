@@ -1,0 +1,13 @@
+---
+interface Props {
+  siteName: string
+}
+
+const { siteName } = Astro.props
+---
+
+<footer class="py-8 text-center text-sm text-slate-500">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <p>© 2026 {siteName}. 用 ❤️ 和 AI 构建</p>
+  </div>
+</footer>
