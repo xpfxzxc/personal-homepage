@@ -23,6 +23,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# python cache
+__pycache__/
+
 # personal notes
 *_insights.md
 *_writing_record.md
