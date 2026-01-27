@@ -1,0 +1,44 @@
+---
+// Back to Top floating button
+// Shows after scrolling down, smooth scrolls to top on click
+---
+
+<button
+  id="back-to-top"
+  aria-label="返回顶部"
+  class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-200/50 text-slate-600 opacity-0 invisible translate-y-4 transition-all duration-300 hover:bg-white hover:text-primary-500 hover:shadow-xl cursor-pointer"
+>
+  <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+</button>
+
+<script>
+  const backToTopBtn = document.getElementById('back-to-top');
+  const scrollThreshold = 400;
+
+  function toggleBackToTop() {
+    if (!backToTopBtn) return;
+
+    if (window.scrollY > scrollThreshold) {
+      backToTopBtn.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+      backToTopBtn.classList.add('opacity-100', 'visible', 'translate-y-0');
+    } else {
+      backToTopBtn.classList.add('opacity-0', 'invisible', 'translate-y-4');
+      backToTopBtn.classList.remove('opacity-100', 'visible', 'translate-y-0');
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  window.addEventListener('scroll', toggleBackToTop, { passive: true });
+  backToTopBtn?.addEventListener('click', scrollToTop);
+
+  // Initial check
+  toggleBackToTop();
+</script>

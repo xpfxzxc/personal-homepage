@@ -51,8 +51,29 @@ const { siteData } = Astro.props
       </div>
     </div>
 
-    <!-- GitHub Contributions -->
+    <!-- GitHub Stats -->
     <div class="mt-12 lg:mt-16">
+      <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg shadow-slate-200/50">
+        <h3 class="text-sm font-medium text-slate-500 mb-4">GitHub Stats</h3>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+          <img
+            src={`https://github-readme-stats.vercel.app/api?username=${siteData.name}&show_icons=true&hide_border=true&bg_color=00000000&title_color=0ea5e9&icon_color=0ea5e9&text_color=475569`}
+            alt="GitHub Stats"
+            class="w-full max-w-md"
+            loading="lazy"
+          />
+          <img
+            src={`https://streak-stats.demolab.com/?user=${siteData.name}&hide_border=true&background=00000000&ring=0ea5e9&fire=e879f9&currStreakLabel=0ea5e9&sideLabels=475569&currStreakNum=1e293b&sideNums=1e293b&dates=64748b`}
+            alt="GitHub Streak Stats"
+            class="w-full max-w-md"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- GitHub Contributions -->
+    <div class="mt-6">
       <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg shadow-slate-200/50">
         <h3 class="text-sm font-medium text-slate-500 mb-4">GitHub 贡献</h3>
         <div class="overflow-x-auto">

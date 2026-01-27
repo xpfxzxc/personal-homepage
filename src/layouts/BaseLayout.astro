@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Navigation from '../components/Navigation.astro'
 import Footer from '../components/Footer.astro'
+import BackToTop from '../components/BackToTop.astro'
 import { siteData, navItems } from '../data/site'
 
 interface Props {
@@ -31,6 +32,7 @@ const { title = `${siteData.name} - 个人主页`, description = siteData.intro 
   </main>
 
   <Footer siteName={siteData.name} />
+  <BackToTop />
 
   <script>
     // Mobile menu toggle
