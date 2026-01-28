@@ -14,20 +14,54 @@ const { title = `${siteData.name} - 个人主页`, description = siteData.intro 
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-transition">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0ea5e9" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Theme initialization script (runs before page render to prevent flash) -->
+  <script is:inline>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+
+      // Remove no-transition class after a short delay
+      setTimeout(() => {
+        document.documentElement.classList.remove('no-transition');
+      }, 100);
+    })();
+  </script>
 </head>
-<body class="text-slate-700 antialiased">
+<body class="text-slate-700 dark:text-slate-100 antialiased">
+  <!-- Background floating shapes -->
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+    <div class="bg-shape bg-shape-4"></div>
+  </div>
+
   <Navigation siteName={siteData.name} navItems={navItems} />
 
-  <main class="pt-14">
+  <main class="pt-14 relative z-10">
     <slot />
   </main>
 
@@ -35,6 +69,48 @@ const { title = `${siteData.name} - 个人主页`, description = siteData.intro 
   <BackToTop />
 
   <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Force lazy images to reload after theme switch
+    function refreshLazyImages() {
+      // Small delay to let CSS classes apply
+      requestAnimationFrame(() => {
+        // Find all lazy images that are now visible
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        lazyImages.forEach(img => {
+          const imgEl = img as HTMLImageElement;
+          // Check if image is visible (not display:none)
+          if (imgEl.offsetParent !== null || imgEl.getClientRects().length > 0) {
+            // If image hasn't loaded yet, force reload by resetting src
+            if (!imgEl.complete || imgEl.naturalWidth === 0) {
+              const src = imgEl.src;
+              imgEl.src = '';
+              imgEl.src = src;
+            }
+          }
+        });
+      });
+    }
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      refreshLazyImages();
+    });
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const stored = localStorage.getItem('theme');
+      if (!stored) {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+    });
+
     // Mobile menu toggle
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -52,8 +128,69 @@ const { title = `${siteData.name} - 个人主页`, description = siteData.intro 
 
     // Touch support for expanding cards
     document.querySelectorAll('.favorite-card').forEach(card => {
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
+        // Don't toggle if clicking a link
+        if ((e.target as HTMLElement).closest('a')) return;
         card.classList.toggle('expanded');
+      });
+    });
+
+    // Navigation active state on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('[data-nav-item]');
+
+    function updateActiveNav() {
+      const scrollY = window.scrollY;
+      const navHeight = 56; // 3.5rem = 56px
+      const offset = navHeight + 100; // Extra offset for better UX
+
+      let currentSection = '';
+
+      sections.forEach(section => {
+        const sectionTop = (section as HTMLElement).offsetTop - offset;
+        const sectionHeight = (section as HTMLElement).offsetHeight;
+
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          currentSection = section.getAttribute('id') || '';
+        }
+      });
+
+      // If at the top of the page, activate first section
+      if (scrollY < 100) {
+        currentSection = sections[0]?.getAttribute('id') || '';
+      }
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Throttle scroll event
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveNav();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial check
+    updateActiveNav();
+
+    // Update on click (for smooth scroll)
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        // Remove active from all
+        navLinks.forEach(l => l.classList.remove('active'));
+        // Add active to clicked
+        link.classList.add('active');
       });
     });
   </script>

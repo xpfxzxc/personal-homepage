@@ -16,11 +16,14 @@ export interface Project {
   description: string
   status: string
   link: string | null
+  cover?: string
 }
 
 export interface FavoriteItem {
   name: string
   comment: string
+  cover?: string
+  link?: string
 }
 
 export interface Favorites {
@@ -32,6 +35,7 @@ export interface Favorites {
 export interface LinkItem {
   name: string
   link: string
+  icon?: string
 }
 
 export interface AIToolCategory {
