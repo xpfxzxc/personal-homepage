@@ -9,29 +9,76 @@ interface Props {
 const { siteName, navItems } = Astro.props
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/95 backdrop-blur-md shadow-sm dark:shadow-none dark:border-b dark:border-slate-700/50">
   <div class="max-w-5xl mx-auto px-4 sm:px-6">
     <div class="flex items-center justify-between h-14">
-      <a href="#" class="font-semibold text-lg text-slate-800">{siteName}</a>
-      <div class="hidden sm:flex items-center gap-1 bg-slate-100/80 rounded-full px-1 py-1">
-        {navItems.map(item => (
-          <a href={item.href} class="px-4 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white rounded-full transition-all">{item.name}</a>
-        ))}
+      <a href="#" class="font-semibold text-lg text-slate-800 dark:text-slate-50">{siteName}</a>
+
+      <div class="flex items-center gap-2">
+        <!-- Desktop menu -->
+        <div class="hidden sm:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/90 rounded-full px-1 py-1">
+          {navItems.map(item => (
+            <a
+              href={item.href}
+              data-nav-item
+              class="nav-link px-4 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-700 rounded-full transition-all"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+
+        <!-- Theme toggle button -->
+        <button
+          id="theme-toggle"
+          type="button"
+          class="p-2 text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"
+          aria-label="切换主题"
+        >
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="sm:hidden p-2 text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
-      <!-- Mobile menu button -->
-      <button id="mobile-menu-btn" class="sm:hidden p-2 text-slate-600 hover:text-slate-800">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
     </div>
   </div>
+
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden sm:hidden bg-white/95 backdrop-blur-md border-t border-slate-100">
+  <div id="mobile-menu" class="hidden sm:hidden bg-white/95 dark:bg-slate-900/98 backdrop-blur-md border-t border-slate-100 dark:border-slate-700/50">
     <div class="px-4 py-3 space-y-2">
       {navItems.map(item => (
-        <a href={item.href} class="block py-2 text-slate-600 hover:text-primary-600">{item.name}</a>
+        <a
+          href={item.href}
+          data-nav-item
+          class="nav-link block py-2 text-slate-600 dark:text-slate-200 hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          {item.name}
+        </a>
       ))}
     </div>
   </div>
 </nav>
+
+<style>
+  @reference "../styles/global.css";
+
+  .nav-link.active {
+    @apply bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400;
+  }
+
+  #mobile-menu .nav-link.active {
+    @apply bg-transparent text-primary-600 dark:text-primary-400 font-medium;
+  }
+</style>
