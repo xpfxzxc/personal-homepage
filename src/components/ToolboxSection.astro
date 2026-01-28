@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { websites, tools, aiTools } = Astro.props
+const base = import.meta.env.BASE_URL
 ---
 
 <section id="toolbox" class="py-16 sm:py-24">
@@ -28,7 +29,7 @@ const { websites, tools, aiTools } = Astro.props
              class="inline-flex items-center gap-2 px-4 py-2.5 bg-white/70 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-md shadow-slate-200/40 dark:shadow-none dark:border dark:border-slate-700/50 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:bg-slate-700/80 transition-all text-sm text-slate-700 dark:text-slate-100 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer">
             {item.icon ? (
               <img
-                src={item.icon}
+                src={base + item.icon}
                 alt={item.name}
                 class="w-5 h-5 rounded object-contain"
                 loading="lazy"
@@ -63,7 +64,7 @@ const { websites, tools, aiTools } = Astro.props
              class="inline-flex items-center gap-2 px-4 py-2.5 bg-white/70 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-md shadow-slate-200/40 dark:shadow-none dark:border dark:border-slate-700/50 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:bg-slate-700/80 transition-all text-sm text-slate-700 dark:text-slate-100 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer">
             {item.icon ? (
               <img
-                src={item.icon}
+                src={base + item.icon}
                 alt={item.name}
                 class="w-5 h-5 rounded object-contain"
                 loading="lazy"
@@ -101,7 +102,7 @@ const { websites, tools, aiTools } = Astro.props
                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/70 transition-colors text-sm text-slate-700 dark:text-slate-100 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer">
                   {item.icon ? (
                     <img
-                      src={item.icon}
+                      src={base + item.icon}
                       alt={item.name}
                       class="w-6 h-6 rounded-md object-contain"
                       loading="lazy"
