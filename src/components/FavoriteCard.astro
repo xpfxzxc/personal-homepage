@@ -11,6 +11,7 @@ interface Props {
 
 const { item, gradientFrom, gradientTo, iconColor, iconPath } = Astro.props
 const hasLink = !!item.link
+const base = import.meta.env.BASE_URL
 ---
 
 {hasLink ? (
@@ -19,7 +20,7 @@ const hasLink = !!item.link
       {item.cover ? (
         <div class="img-skeleton skeleton"></div>
         <img
-          src={item.cover}
+          src={base + item.cover}
           alt={item.name}
           class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
@@ -50,7 +51,7 @@ const hasLink = !!item.link
       {item.cover ? (
         <div class="img-skeleton skeleton"></div>
         <img
-          src={item.cover}
+          src={base + item.cover}
           alt={item.name}
           class="w-full h-full object-cover"
           loading="lazy"
